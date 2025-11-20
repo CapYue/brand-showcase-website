@@ -1,0 +1,35 @@
+# Brand Showcase Official Website - Robots Configuration
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /*.json$
+Disallow: /*.pdf$
+
+# Sitemap
+Sitemap: https://example.com/sitemap.xml
+
+# 百度爬虫特殊配置
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+# Google Bot
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# 其他搜索引擎
+User-agent: *
+Allow: /
+
+# 社交媒体爬虫
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
