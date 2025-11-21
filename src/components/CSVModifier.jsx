@@ -70,6 +70,11 @@ const CSVModifier = () => {
             const report = WebsiteModifier.generateModificationReport(mods);
             console.log('修改报告:', report);
             
+            // 延迟一下刷新页面，以便演染更新
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+            
         } catch (error) {
             setUploadStatus(`处理失败: ${error.message}`);
         } finally {

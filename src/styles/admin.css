@@ -1,361 +1,363 @@
 /* ==================== 管理后台样式 ==================== */
 
 .admin-dashboard {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
-  background: #f5f5f5;
-  min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f5f5f5;
+    min-height: 100vh;
 }
 
 .admin-header {
-  background: white;
-  border-radius: 8px;
-  padding: 30px;
-  margin-bottom: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .admin-header h1 {
-  margin: 0 0 15px 0;
-  color: #2c3e50;
-  font-size: 28px;
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 28px;
 }
 
 .admin-info {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .message {
-  padding: 12px 16px;
-  border-radius: 4px;
-  font-size: 14px;
-  animation: slideIn 0.3s ease-out;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    animation: slideIn 0.3s ease-out;
 }
 
 .message:contains("✅") {
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
 .message:contains("❌") {
-  background: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
 }
 
 @keyframes slideIn {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 /* ==================== 标签页 ==================== */
 
 .admin-tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 30px;
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .tab-button {
-  flex: 1;
-  padding: 12px 16px;
-  border: none;
-  background: #f0f0f0;
-  color: #666;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: #f0f0f0;
+    color: #666;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .tab-button:hover {
-  background: #e0e0e0;
+    background: #e0e0e0;
 }
 
 .tab-button.active {
-  background: #2c3e50;
-  color: white;
+    background: #2c3e50;
+    color: white;
 }
 
 /* ==================== 内容区域 ==================== */
 
 .admin-content {
-  background: white;
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .admin-content h3 {
-  margin: 0 0 20px 0;
-  color: #2c3e50;
-  font-size: 20px;
-  border-bottom: 2px solid #3498db;
-  padding-bottom: 10px;
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    font-size: 20px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
 }
 
 .loading {
-  text-align: center;
-  padding: 40px;
-  color: #999;
-  font-size: 16px;
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 16px;
 }
 
 /* ==================== 表单 ==================== */
 
 .admin-form {
-  background: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 30px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
 }
 
 .admin-form h3 {
-  margin: 0 0 20px 0;
-  color: #2c3e50;
+    margin: 0 0 20px 0;
+    color: #2c3e50;
 }
 
 .form-group {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: #333;
-  font-weight: 500;
-  font-size: 14px;
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 14px;
-  transition: border-color 0.3s ease;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
 .image-upload {
-  border: 2px dashed #ddd;
-  border-radius: 4px;
-  padding: 20px;
-  text-align: center;
-  transition: border-color 0.3s ease;
+    border: 2px dashed #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    transition: border-color 0.3s ease;
 }
 
 .image-upload:hover {
-  border-color: #3498db;
+    border-color: #3498db;
 }
 
 .image-upload input {
-  width: auto;
-  padding: 8px;
+    width: auto;
+    padding: 8px;
 }
 
 .form-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
 }
 
 .btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .btn-primary {
-  background: #2c3e50;
-  color: white;
+    background: #2c3e50;
+    color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #34495e;
+    background: #34495e;
 }
 
 .btn-secondary {
-  background: #95a5a6;
-  color: white;
+    background: #95a5a6;
+    color: white;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #7f8c8d;
+    background: #7f8c8d;
 }
 
 /* ==================== 表格 ==================== */
 
 .admin-list {
-  margin-top: 30px;
+    margin-top: 30px;
 }
 
 .admin-list h3 {
-  margin: 0 0 20px 0;
-  color: #2c3e50;
-  font-size: 20px;
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    font-size: 20px;
 }
 
 .admin-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 .admin-table thead {
-  background: #f0f0f0;
-  border-top: 2px solid #ddd;
-  border-bottom: 2px solid #ddd;
+    background: #f0f0f0;
+    border-top: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
 }
 
 .admin-table th {
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 600;
-  color: #333;
-  font-size: 14px;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
 }
 
 .admin-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-  color: #666;
-  font-size: 14px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    color: #666;
+    font-size: 14px;
 }
 
 .admin-table tbody tr:hover {
-  background: #f9f9f9;
+    background: #f9f9f9;
 }
 
 .admin-table tbody tr:last-child td {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 /* ==================== 按钮 ==================== */
 
 .btn-small {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  margin-right: 5px;
-  transition: all 0.3s ease;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 5px;
+    transition: all 0.3s ease;
 }
 
 .btn-edit {
-  background: #3498db;
-  color: white;
+    background: #3498db;
+    color: white;
 }
 
 .btn-edit:hover {
-  background: #2980b9;
+    background: #2980b9;
 }
 
 .btn-delete {
-  background: #e74c3c;
-  color: white;
+    background: #e74c3c;
+    color: white;
 }
 
 .btn-delete:hover {
-  background: #c0392b;
+    background: #c0392b;
 }
 
 /* ==================== 响应式设计 ==================== */
 
 @media (max-width: 768px) {
-  .admin-dashboard {
-    padding: 10px;
-  }
+    .admin-dashboard {
+        padding: 10px;
+    }
 
-  .admin-header {
-    padding: 20px;
-  }
+    .admin-header {
+        padding: 20px;
+    }
 
-  .admin-header h1 {
-    font-size: 22px;
-  }
+    .admin-header h1 {
+        font-size: 22px;
+    }
 
-  .admin-tabs {
-    flex-direction: column;
-  }
+    .admin-tabs {
+        flex-direction: column;
+    }
 
-  .admin-table {
-    font-size: 12px;
-  }
+    .admin-table {
+        font-size: 12px;
+    }
 
-  .admin-table th,
-  .admin-table td {
-    padding: 8px 12px;
-  }
+    .admin-table th,
+    .admin-table td {
+        padding: 8px 12px;
+    }
 
-  .btn-small {
-    padding: 4px 8px;
-    font-size: 11px;
-  }
+    .btn-small {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
 
-  .form-actions {
-    flex-direction: column;
-  }
+    .form-actions {
+        flex-direction: column;
+    }
 
-  .btn {
-    width: 100%;
-  }
+    .btn {
+        width: 100%;
+    }
 }
 
 /* ==================== 动画 ==================== */
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .admin-list,
 .admin-form {
-  animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.3s ease-out;
 }

@@ -7,12 +7,26 @@ import Certifications from './components/Certifications'
 import News from './components/News'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import AdminDashboard from './components/AdminDashboard'
 import CSVModifier from './components/CSVModifier'
 import { updateMetaTags, getStructuredData } from './utils/seo'
 import { performanceMonitor } from './utils/hooks'
 
 function App() {
     const [language, setLanguage] = useState('zh')
+    const [isAdminMode, setIsAdminMode] = useState(false)
+
+    // 监听路由变化，判断是否为管理后台
+    useEffect(() => {
+        const handleRouteChange = () => {
+            const path = window.location.pathname
+            setIsAdminMode(path.includes('/admin'))
+        }
+
+        handleRouteChange()
+        window.addEventListener('hashchange', handleRouteChange)
+        return () => window.removeEventListener('hashchange', handleRouteChange)
+    }, [])
 
     useEffect(() => {
         // SEO 配置
@@ -39,6 +53,11 @@ function App() {
         performanceMonitor.measureResourceTiming()
         performanceMonitor.measureCoreWebVitals()
     }, [language])
+
+    // 如果是管理后台模式，只显示管理界面
+    if (isAdminMode) {
+        return <AdminDashboard />
+    }
 
     return (
         <div className="app">

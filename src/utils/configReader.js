@@ -21,14 +21,21 @@ export class ConfigReader {
                 throw new Error(`配置文件加载失败: ${response.status}`);
             }
             const config = await response.json();
+            // 默认禁用csvModifier工具，只有在配置中明确启用才会开启
+            if (!config.features) {
+                config.features = {};
+            }
+            if (config.features.csvModifier === undefined) {
+                config.features.csvModifier = { enabled: false };
+            }
             return config;
         } catch (error) {
             console.warn(`无法加载配置文件 ${configFile}，使用默认配置:`, error.message);
             // 返回默认配置
             return {
                 features: {
-                    csvModifier: { enabled: isDevelopment },
-                    excelGenerator: { enabled: isDevelopment },
+                    csvModifier: { enabled: false }, // 默认禁用，不让用户看到
+                    excelGenerator: { enabled: false },
                     debugMode: { enabled: isDevelopment }
                 },
                 environment: isDevelopment ? 'development' : 'production',

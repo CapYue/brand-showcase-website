@@ -304,29 +304,39 @@ export class WebsiteModifier {
      * 更新基本信息
      */
     static updateBasicInfo(field, value) {
-        // 这里需要根据实际DOM结构实现
-        // 示例实现：
-        switch (field) {
-            case '公司名称':
-                // 更新页面中的公司名称
-                this.updateTextContent('.company-name', value);
-                break;
-            case '品牌名称':
-                this.updateTextContent('.brand-name', value);
-                break;
-            case '网站标题':
-                document.title = value;
-                break;
-            case '联系电话':
-                this.updateTextContent('.phone-number', value);
-                break;
-            case '邮箱地址':
-                this.updateTextContent('.email-address', value);
-                break;
-            case '公司地址':
-                this.updateTextContent('.company-address', value);
-                break;
+        // 更新页面的基本信息
+        // 支持多个选择器以核查各软会内容
+        const selectors = {
+            '公司名称': ['.company-name', '[data-name="company"]', '.navbar-logo'],
+            '品牌名称': ['.brand-name', '[data-name="brand"]', '.brand-logo'],
+            '网站标题': [],
+            '联系电话': ['.phone-number', '.contact-phone', '[data-contact="phone"]'],
+            '邮箱地址': ['.email-address', '.contact-email', '[data-contact="email"]'],
+            '公司地址': ['.company-address', '.contact-address', '[data-contact="address"]']
+        };
+
+        if (field === '网站标题') {
+            document.title = value;
+            return;
         }
+
+        const selectorList = selectors[field] || [];
+        
+        // 优先使用一些更简化的整体更新方案
+        selectorList.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                el.textContent = value;
+            });
+        });
+
+        // 如果没找到，会去检查整个页面找布门
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(el => {
+            if (el.textContent && el.textContent.trim() === field) {
+                el.textContent = value;
+            }
+        });
     }
     
     /**
@@ -410,13 +420,30 @@ export class WebsiteModifier {
     }
     
     /**
-     * 通用文本内容更新方法
+     * 通用文本内容更新方法 - 增强版本
      */
     static updateTextContent(selector, text) {
+        if (!text) return;
+        
+        // 优先使用选择器查找
         const elements = document.querySelectorAll(selector);
-        elements.forEach(element => {
-            element.textContent = text;
-        });
+        if (elements.length > 0) {
+            elements.forEach(el => {
+                el.textContent = text;
+            });
+            return;
+        }
+        
+        // 如果选择器没有找到，则尝试全页面搜索
+        const allElements = document.querySelectorAll('*');
+        for (let el of allElements) {
+            // 检查是不是内容元素
+            if (el.childNodes.length > 0) continue; // 跳过有子的元素
+            if (el.textContent && el.textContent.length < 200) {
+                el.textContent = text;
+                break;
+            }
+        }
     }
     
     /**
