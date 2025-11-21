@@ -1,0 +1,18 @@
+{
+  "features": {
+    "csvModifier": {
+      "enabled": false,
+      "description": "CSV修改工具 - 用于内部开发和客户定制"
+    },
+    "excelGenerator": {
+      "enabled": false,
+      "description": "Excel模板生成器 - 用于内部开发和客户定制"
+    },
+    "debugMode": {
+      "enabled": false,
+      "description": "调试模式 - 显示开发工具和调试信息"
+    }
+  },
+  "environment": "production",
+  "version": "1.0.0"
+}

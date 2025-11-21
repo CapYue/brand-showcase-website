@@ -27,7 +27,7 @@ const Navbar = ({ language, setLanguage }) => {
         <nav className={`navbar ${isFixed ? 'fixed' : ''}`}>
             <div className="container navbar-container">
                 <div className="navbar-brand">
-                    <span className="brand-logo">BRAND</span>
+                    <span className="brand-logo">元途</span>
                 </div>
 
                 <button
