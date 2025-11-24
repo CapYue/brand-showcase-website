@@ -2,19 +2,19 @@
  * 配置读取器 - 用于读取外部配置文件
  */
 export class ConfigReader {
-    
+
     /**
      * 异步加载配置文件
      */
     static async loadConfig() {
         // 根据当前URL判断环境
-        const isDevelopment = window.location.hostname === 'localhost' || 
-                            window.location.hostname === '127.0.0.1' ||
-                            window.location.hostname.includes('dev') ||
-                            window.location.hostname.includes('test');
-        
+        const isDevelopment = window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1' ||
+            window.location.hostname.includes('dev') ||
+            window.location.hostname.includes('test');
+
         const configFile = isDevelopment ? '/config-dev.json' : '/config.json';
-        
+
         try {
             const response = await fetch(configFile);
             if (!response.ok) {
@@ -43,7 +43,7 @@ export class ConfigReader {
             };
         }
     }
-    
+
     /**
      * 检查特定功能是否启用
      * @param {string} featureName - 功能名称
@@ -53,7 +53,7 @@ export class ConfigReader {
         const config = await this.loadConfig();
         return config.features[featureName]?.enabled || false;
     }
-    
+
     /**
      * 获取当前环境
      * @returns {Promise<string>} 环境名称
@@ -62,7 +62,7 @@ export class ConfigReader {
         const config = await this.loadConfig();
         return config.environment || 'production';
     }
-    
+
     /**
      * 检查是否为开发环境
      * @returns {Promise<boolean>} 是否为开发环境
@@ -71,7 +71,7 @@ export class ConfigReader {
         const env = await this.getEnvironment();
         return env === 'development';
     }
-    
+
     /**
      * 检查是否为生产环境
      * @returns {Promise<boolean>} 是否为生产环境
@@ -80,7 +80,7 @@ export class ConfigReader {
         const env = await this.getEnvironment();
         return env === 'production';
     }
-    
+
     /**
      * 获取所有配置
      * @returns {Promise<Object>} 完整配置对象

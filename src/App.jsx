@@ -8,7 +8,6 @@ import News from './components/News'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import AdminDashboard from './components/AdminDashboard'
-import CSVModifier from './components/CSVModifier'
 import { updateMetaTags, getStructuredData } from './utils/seo'
 import { performanceMonitor } from './utils/hooks'
 
@@ -69,7 +68,6 @@ function App() {
             <News language={language} />
             <Contact language={language} />
             <Footer language={language} />
-            <CSVModifier />
         </div>
     )
 }

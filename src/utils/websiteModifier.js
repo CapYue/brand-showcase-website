@@ -4,7 +4,7 @@ import Papa from 'papaparse';
  * 网站内容修改器 - 根据CSV文件修改网站内容
  */
 export class WebsiteModifier {
-    
+
     /**
      * 解析CSV文件并应用修改
      * @param {File} csvFile - 上传的CSV文件
@@ -29,7 +29,7 @@ export class WebsiteModifier {
             });
         });
     }
-    
+
     /**
      * 解析CSV数据并提取修改信息
      * @param {Array} csvData - CSV解析后的数据
@@ -43,15 +43,15 @@ export class WebsiteModifier {
             products: {},
             contact: {}
         };
-        
+
         let currentSection = '';
-        
+
         for (let i = 0; i < csvData.length; i++) {
             const row = csvData[i];
             if (!row || row.length === 0) continue;
-            
+
             const firstCell = row[0]?.trim() || '';
-            
+
             // 检测章节标题
             if (firstCell.includes('基本信息表') || firstCell.includes('基本信息')) {
                 currentSection = 'basicInfo';
@@ -72,13 +72,13 @@ export class WebsiteModifier {
                 currentSection = 'contact';
                 continue;
             }
-            
+
             // 跳过标题行和空行
-            if (firstCell.includes('字段名称') || firstCell.includes('字段分类') || 
+            if (firstCell.includes('字段名称') || firstCell.includes('字段分类') ||
                 firstCell.includes('网站信息') || row.length < 3) {
                 continue;
             }
-            
+
             // 根据章节处理数据
             switch (currentSection) {
                 case 'basicInfo':
@@ -90,7 +90,7 @@ export class WebsiteModifier {
                         }
                     }
                     break;
-                    
+
                 case 'navigation':
                     if (row.length >= 6) {
                         const navItem = row[0]?.trim();
@@ -104,7 +104,7 @@ export class WebsiteModifier {
                         }
                     }
                     break;
-                    
+
                 case 'banners':
                     if (row.length >= 8) {
                         const slideNum = row[0]?.trim();
@@ -120,7 +120,7 @@ export class WebsiteModifier {
                         }
                     }
                     break;
-                    
+
                 case 'about':
                     if (row.length >= 7) {
                         const fieldType = row[0]?.trim();
@@ -138,7 +138,7 @@ export class WebsiteModifier {
                         }
                     }
                     break;
-                    
+
                 case 'products':
                     if (row.length >= 18) {
                         const productId = row[1]?.trim();
@@ -160,7 +160,7 @@ export class WebsiteModifier {
                         }
                     }
                     break;
-                    
+
                 case 'contact':
                     if (row.length >= 4) {
                         const fieldName = row[0]?.trim();
@@ -172,10 +172,10 @@ export class WebsiteModifier {
                     break;
             }
         }
-        
+
         return modifications;
     }
-    
+
     /**
      * 应用修改到网站
      * @param {Object} modifications - 修改数据
@@ -183,7 +183,7 @@ export class WebsiteModifier {
      */
     static applyModifications(modifications, onUpdate) {
         const updates = [];
-        
+
         // 应用基本信息修改
         if (modifications.basicInfo) {
             Object.entries(modifications.basicInfo).forEach(([field, value]) => {
@@ -197,7 +197,7 @@ export class WebsiteModifier {
                 }
             });
         }
-        
+
         // 应用导航菜单修改
         if (modifications.navigation) {
             Object.entries(modifications.navigation).forEach(([navItem, values]) => {
@@ -211,7 +211,7 @@ export class WebsiteModifier {
                 }
             });
         }
-        
+
         // 应用Banner修改
         if (modifications.banners) {
             Object.entries(modifications.banners).forEach(([slide, data]) => {
@@ -225,7 +225,7 @@ export class WebsiteModifier {
                 }
             });
         }
-        
+
         // 应用关于我们修改
         if (modifications.about) {
             Object.entries(modifications.about).forEach(([fieldType, fields]) => {
@@ -242,7 +242,7 @@ export class WebsiteModifier {
                 });
             });
         }
-        
+
         // 应用产品信息修改
         if (modifications.products) {
             Object.entries(modifications.products).forEach(([product, data]) => {
@@ -256,7 +256,7 @@ export class WebsiteModifier {
                 }
             });
         }
-        
+
         // 应用联系信息修改
         if (modifications.contact) {
             Object.entries(modifications.contact).forEach(([field, value]) => {
@@ -270,7 +270,7 @@ export class WebsiteModifier {
                 }
             });
         }
-        
+
         // 执行所有更新
         updates.forEach((update, index) => {
             setTimeout(() => {
@@ -296,10 +296,10 @@ export class WebsiteModifier {
                 }
             }, index * 100); // 间隔执行，避免同时修改DOM
         });
-        
+
         return updates.length;
     }
-    
+
     /**
      * 更新基本信息
      */
@@ -321,7 +321,7 @@ export class WebsiteModifier {
         }
 
         const selectorList = selectors[field] || [];
-        
+
         // 优先使用一些更简化的整体更新方案
         selectorList.forEach(selector => {
             const elements = document.querySelectorAll(selector);
@@ -338,7 +338,7 @@ export class WebsiteModifier {
             }
         });
     }
-    
+
     /**
      * 更新导航菜单
      */
@@ -352,14 +352,14 @@ export class WebsiteModifier {
             this.updateTextContent(`${selector} .en`, values.en);
         }
     }
-    
+
     /**
      * 更新Banner内容
      */
     static updateBanner(slide, data) {
         const slideIndex = slide.replace('slide', '');
         const selector = `.banner-slide-${slideIndex}`;
-        
+
         if (data.title) {
             this.updateTextContent(`${selector} .title`, data.title);
         }
@@ -370,7 +370,7 @@ export class WebsiteModifier {
             this.updateImageSource(`${selector} img`, data.image);
         }
     }
-    
+
     /**
      * 更新关于我们内容
      */
@@ -383,14 +383,14 @@ export class WebsiteModifier {
             this.updateTextContent(`${selector} .en`, values.en);
         }
     }
-    
+
     /**
      * 更新产品信息
      */
     static updateProduct(product, data) {
         const productIndex = product.replace('product', '');
         const selector = `.product-item-${productIndex}`;
-        
+
         if (data.nameZh) {
             this.updateTextContent(`${selector} .name-zh`, data.nameZh);
         }
@@ -410,7 +410,7 @@ export class WebsiteModifier {
             this.updateImageSource(`${selector} img`, data.image);
         }
     }
-    
+
     /**
      * 更新联系信息
      */
@@ -418,13 +418,13 @@ export class WebsiteModifier {
         const selector = `.contact-${field.toLowerCase()}`;
         this.updateTextContent(selector, value);
     }
-    
+
     /**
      * 通用文本内容更新方法 - 增强版本
      */
     static updateTextContent(selector, text) {
         if (!text) return;
-        
+
         // 优先使用选择器查找
         const elements = document.querySelectorAll(selector);
         if (elements.length > 0) {
@@ -433,7 +433,7 @@ export class WebsiteModifier {
             });
             return;
         }
-        
+
         // 如果选择器没有找到，则尝试全页面搜索
         const allElements = document.querySelectorAll('*');
         for (let el of allElements) {
@@ -445,7 +445,7 @@ export class WebsiteModifier {
             }
         }
     }
-    
+
     /**
      * 通用图片源更新方法
      */
@@ -455,7 +455,7 @@ export class WebsiteModifier {
             element.src = src;
         });
     }
-    
+
     /**
      * 生成修改报告
      */
@@ -465,13 +465,13 @@ export class WebsiteModifier {
             totalModifications: 0,
             sections: {}
         };
-        
+
         Object.entries(modifications).forEach(([section, data]) => {
             const count = Object.keys(data).length;
             report.sections[section] = count;
             report.totalModifications += count;
         });
-        
+
         return report;
     }
 }

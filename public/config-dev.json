@@ -1,18 +1,18 @@
 {
-  "features": {
-    "csvModifier": {
-      "enabled": true,
-      "description": "CSV修改工具 - 用于内部开发和客户定制"
+    "features": {
+        "csvModifier": {
+            "enabled": true,
+            "description": "CSV修改工具 - 用于内部开发和客户定制"
+        },
+        "excelGenerator": {
+            "enabled": true,
+            "description": "Excel模板生成器 - 用于内部开发和客户定制"
+        },
+        "debugMode": {
+            "enabled": true,
+            "description": "调试模式 - 显示开发工具和调试信息"
+        }
     },
-    "excelGenerator": {
-      "enabled": true,
-      "description": "Excel模板生成器 - 用于内部开发和客户定制"
-    },
-    "debugMode": {
-      "enabled": true,
-      "description": "调试模式 - 显示开发工具和调试信息"
-    }
-  },
-  "environment": "development",
-  "version": "1.0.0-dev"
+    "environment": "development",
+    "version": "1.0.0-dev"
 }

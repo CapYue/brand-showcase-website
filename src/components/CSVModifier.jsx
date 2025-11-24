@@ -18,7 +18,7 @@ const CSVModifier = () => {
             try {
                 const enabled = await ConfigReader.isFeatureEnabled('csvModifier');
                 setIsToolEnabled(enabled);
-                
+
                 if (enabled) {
                     console.log('CSV修改工具已启用 - 内部版本');
                 } else {
@@ -65,16 +65,16 @@ const CSVModifier = () => {
             });
 
             setUploadStatus(`修改完成！共应用了 ${Object.keys(mods).reduce((acc, key) => acc + Object.keys(mods[key]).length, 0)} 处修改`);
-            
+
             // 生成修改报告
             const report = WebsiteModifier.generateModificationReport(mods);
             console.log('修改报告:', report);
-            
+
             // 延迟一下刷新页面，以便演染更新
             setTimeout(() => {
                 window.location.reload();
             }, 1500);
-            
+
         } catch (error) {
             setUploadStatus(`处理失败: ${error.message}`);
         } finally {
@@ -105,7 +105,7 @@ const CSVModifier = () => {
     return (
         <>
             {/* 浮动按钮 */}
-            <button 
+            <button
                 className="csv-modifier-toggle"
                 onClick={toggleVisibility}
                 title="CSV修改工具"
@@ -118,7 +118,7 @@ const CSVModifier = () => {
                 <div className="csv-modifier-panel">
                     <div className="csv-modifier-header">
                         <h3>网站内容修改工具</h3>
-                        <button 
+                        <button
                             className="close-btn"
                             onClick={toggleVisibility}
                         >
@@ -131,14 +131,14 @@ const CSVModifier = () => {
                         <div className="template-section">
                             <h4>1. 下载填写模板</h4>
                             <div className="button-group">
-                                <button 
+                                <button
                                     className="btn btn-primary"
                                     onClick={handleGenerateTemplate}
                                     disabled={isProcessing}
                                 >
                                     下载完整模板
                                 </button>
-                                <button 
+                                <button
                                     className="btn btn-secondary"
                                     onClick={handleGenerateSimpleTemplate}
                                     disabled={isProcessing}
@@ -161,7 +161,7 @@ const CSVModifier = () => {
                                 onChange={handleFileUpload}
                                 style={{ display: 'none' }}
                             />
-                            <button 
+                            <button
                                 className="btn btn-upload"
                                 onClick={handleUploadClick}
                                 disabled={isProcessing}
@@ -186,8 +186,8 @@ const CSVModifier = () => {
                                 <h4>修改记录</h4>
                                 <div className="modifications-list">
                                     {modifications.map((mod, index) => (
-                                        <div 
-                                            key={index} 
+                                        <div
+                                            key={index}
                                             className={`modification-item ${mod.success ? 'success' : 'error'}`}
                                         >
                                             <span className="mod-type">{mod.type}</span>
@@ -203,7 +203,7 @@ const CSVModifier = () => {
 
                         {/* 操作按钮 */}
                         <div className="action-section">
-                            <button 
+                            <button
                                 className="btn btn-reset"
                                 onClick={handleReset}
                             >
