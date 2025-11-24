@@ -424,14 +424,18 @@ app.post('/api/admin/upload', upload.single('file'), (req, res) => {
     });
 });
 
-// ==================== 管理员 API (需要认证) ====================
+// ========== 管理员 API ==========
 
-// 更新产品信息
+// 更新产品
 app.put('/api/admin/products/:id', (req, res) => {
     const productIndex = websiteData.products.findIndex(p => p.id === parseInt(req.params.id));
 
     if (productIndex === -1) {
-        return res.status(404).json({ error: '产品不存在' });
+        return res.status(404).json({
+            code: 404,
+            message: '产品不存在',
+            data: null
+        });
     }
 
     websiteData.products[productIndex] = {
@@ -439,18 +443,26 @@ app.put('/api/admin/products/:id', (req, res) => {
         ...req.body
     };
 
-    res.json(websiteData.products[productIndex]);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: websiteData.products[productIndex]
+    });
 });
 
-// 添加新产品
+// 创建产品
 app.post('/api/admin/products', (req, res) => {
     const newProduct = {
-        id: Math.max(...websiteData.products.map(p => p.id)) + 1,
+        id: Math.max(...websiteData.products.map(p => p.id), 0) + 1,
         ...req.body
     };
 
     websiteData.products.push(newProduct);
-    res.json(newProduct);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: newProduct
+    });
 });
 
 // 删除产品
@@ -458,11 +470,197 @@ app.delete('/api/admin/products/:id', (req, res) => {
     const index = websiteData.products.findIndex(p => p.id === parseInt(req.params.id));
 
     if (index === -1) {
-        return res.status(404).json({ error: '产品不存在' });
+        return res.status(404).json({
+            code: 404,
+            message: '产品不存在',
+            data: null
+        });
     }
 
     websiteData.products.splice(index, 1);
-    res.json({ success: true });
+    res.json({
+        code: 200,
+        message: 'success',
+        data: { success: true }
+    });
+});
+
+// 更新新闻
+app.put('/api/admin/news/:id', (req, res) => {
+    const newsIndex = websiteData.news.findIndex(n => n.id === parseInt(req.params.id));
+
+    if (newsIndex === -1) {
+        return res.status(404).json({
+            code: 404,
+            message: '新闻不存在',
+            data: null
+        });
+    }
+
+    websiteData.news[newsIndex] = {
+        ...websiteData.news[newsIndex],
+        ...req.body
+    };
+
+    res.json({
+        code: 200,
+        message: 'success',
+        data: websiteData.news[newsIndex]
+    });
+});
+
+// 创建新闻
+app.post('/api/admin/news', (req, res) => {
+    const newNews = {
+        id: Math.max(...websiteData.news.map(n => n.id), 0) + 1,
+        ...req.body,
+        date: new Date().toISOString().split('T')[0]
+    };
+
+    websiteData.news.push(newNews);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: newNews
+    });
+});
+
+// 删除新闻
+app.delete('/api/admin/news/:id', (req, res) => {
+    const index = websiteData.news.findIndex(n => n.id === parseInt(req.params.id));
+
+    if (index === -1) {
+        return res.status(404).json({
+            code: 404,
+            message: '新闻不存在',
+            data: null
+        });
+    }
+
+    websiteData.news.splice(index, 1);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: { success: true }
+    });
+});
+
+// 更新资质
+app.put('/api/admin/honors/:id', (req, res) => {
+    const honorIndex = websiteData.certifications.findIndex(h => h.id === parseInt(req.params.id));
+
+    if (honorIndex === -1) {
+        return res.status(404).json({
+            code: 404,
+            message: '资质不存在',
+            data: null
+        });
+    }
+
+    websiteData.certifications[honorIndex] = {
+        ...websiteData.certifications[honorIndex],
+        ...req.body
+    };
+
+    res.json({
+        code: 200,
+        message: 'success',
+        data: websiteData.certifications[honorIndex]
+    });
+});
+
+// 创建资质
+app.post('/api/admin/honors', (req, res) => {
+    const newHonor = {
+        id: Math.max(...websiteData.certifications.map(h => h.id), 0) + 1,
+        ...req.body
+    };
+
+    websiteData.certifications.push(newHonor);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: newHonor
+    });
+});
+
+// 删除资质
+app.delete('/api/admin/honors/:id', (req, res) => {
+    const index = websiteData.certifications.findIndex(h => h.id === parseInt(req.params.id));
+
+    if (index === -1) {
+        return res.status(404).json({
+            code: 404,
+            message: '资质不存在',
+            data: null
+        });
+    }
+
+    websiteData.certifications.splice(index, 1);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: { success: true }
+    });
+});
+
+// 更新轮播
+app.put('/api/admin/banners/:id', (req, res) => {
+    const bannerIndex = websiteData.banner.findIndex(b => b.id === parseInt(req.params.id));
+
+    if (bannerIndex === -1) {
+        return res.status(404).json({
+            code: 404,
+            message: '轮播图不存在',
+            data: null
+        });
+    }
+
+    websiteData.banner[bannerIndex] = {
+        ...websiteData.banner[bannerIndex],
+        ...req.body
+    };
+
+    res.json({
+        code: 200,
+        message: 'success',
+        data: websiteData.banner[bannerIndex]
+    });
+});
+
+// 创建轮播
+app.post('/api/admin/banners', (req, res) => {
+    const newBanner = {
+        id: Math.max(...websiteData.banner.map(b => b.id), 0) + 1,
+        ...req.body
+    };
+
+    websiteData.banner.push(newBanner);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: newBanner
+    });
+});
+
+// 删除轮播
+app.delete('/api/admin/banners/:id', (req, res) => {
+    const index = websiteData.banner.findIndex(b => b.id === parseInt(req.params.id));
+
+    if (index === -1) {
+        return res.status(404).json({
+            code: 404,
+            message: '轮播图不存在',
+            data: null
+        });
+    }
+
+    websiteData.banner.splice(index, 1);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: { success: true }
+    });
 });
 
 // ==================== 错误处理 ====================
@@ -476,13 +674,32 @@ app.use((err, req, res, next) => {
 
 // 启动服务器
 app.listen(PORT, () => {
-    console.log(`✅ API 服务器运行在: http://localhost:${PORT}`);
-    console.log(`📝 API 文档:`);
-    console.log(`   - 轮播: GET /api/website/banner`);
-    console.log(`   - 产品: GET /api/website/products`);
-    console.log(`   - 新闻: GET /api/website/news`);
-    console.log(`   - 联系: POST /api/website/contact/submit`);
-    console.log(`   - 上传: POST /api/upload/image`);
+    console.log(`\n✅ 品牌展示官网 - API 服务器启动成功！`);
+    console.log(`\n📡 服务器地址: http://localhost:${PORT}`);
+    console.log(`\n📚 API 文档:`);
+    console.log(`\n【公共 API - 获取数据】`);
+    console.log(`  GET  /api/v1/banners                - 获取轮播数据`);
+    console.log(`  GET  /api/v1/company/info           - 获取企业信息`);
+    console.log(`  GET  /api/v1/products               - 获取产品列表`);
+    console.log(`  GET  /api/v1/products/:id           - 获取产品详情`);
+    console.log(`  GET  /api/v1/honors                 - 获取资质荣誉`);
+    console.log(`  GET  /api/v1/news                   - 获取新闻列表`);
+    console.log(`  GET  /api/v1/news/:id               - 获取新闻详情`);
+    console.log(`  POST /api/v1/contact                - 提交联系表单`);
+    console.log(`  POST /api/admin/upload              - 上传文件`);
+    console.log(`\n【管理员 API - 数据管理】`);
+    console.log(`  POST   /api/admin/products          - 创建产品`);
+    console.log(`  PUT    /api/admin/products/:id      - 更新产品`);
+    console.log(`  DELETE /api/admin/products/:id      - 删除产品`);
+    console.log(`  POST   /api/admin/news              - 创建新闻`);
+    console.log(`  PUT    /api/admin/news/:id          - 更新新闻`);
+    console.log(`  DELETE /api/admin/news/:id          - 删除新闻`);
+    console.log(`  POST   /api/admin/honors            - 创建资质`);
+    console.log(`  PUT    /api/admin/honors/:id        - 更新资质`);
+    console.log(`  DELETE /api/admin/honors/:id        - 删除资质`);
+    console.log(`  POST   /api/admin/banners           - 创建轮播`);
+    console.log(`  PUT    /api/admin/banners/:id       - 更新轮播`);
+    console.log(`  DELETE /api/admin/banners/:id       - 删除轮播`);
+    console.log(`\n🔧 前端地址: http://localhost:5173`);
+    console.log(`\n💡 提示: 请在前端运行 npm run dev:both 同时启动前后端\n`);
 });
-
-export default app;
