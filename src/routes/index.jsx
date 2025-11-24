@@ -21,31 +21,31 @@ const routes = [
                 element: <HomePage />
             },
             {
-                path: '/about',
+                path: 'about',
                 element: <AboutPage />
             },
             {
-                path: '/products',
+                path: 'products',
                 element: <ProductsPage />
             },
             {
-                path: '/products/:id',
+                path: 'products/:id',
                 element: <ProductDetailPage />
             },
             {
-                path: '/technology',
+                path: 'technology',
                 element: <TechnologyPage />
             },
             {
-                path: '/news',
+                path: 'news',
                 element: <NewsPage />
             },
             {
-                path: '/news/:id',
+                path: 'news/:id',
                 element: <NewsDetailPage />
             },
             {
-                path: '/contact',
+                path: 'contact',
                 element: <ContactPage />
             }
         ]

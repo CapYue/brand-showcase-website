@@ -3,6 +3,8 @@
  * 支持惨新的 RESTful API (v1) 和 旧式 API
  */
 
+import mockData from './mockData'
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
 const ADMIN_API_URL = import.meta.env.VITE_ADMIN_API_URL || 'http://localhost:3001/api/admin'
 
@@ -47,7 +49,7 @@ class APIClient {
      */
     async getBanners() {
         const response = await this.request('/banners')
-        return response.data || response || []
+        return response.data || response || mockData.banners
     }
 
     /**
@@ -67,7 +69,7 @@ class APIClient {
             endpoint += `?category=${encodeURIComponent(category)}`
         }
         const response = await this.request(endpoint)
-        return response.data || response || []
+        return response.data || response || mockData.products
     }
 
     /**
@@ -75,7 +77,7 @@ class APIClient {
      */
     async getCertifications() {
         const response = await this.request('/honors')
-        return response.data || response || []
+        return response.data || response || mockData.certifications
     }
 
     /**
@@ -87,7 +89,8 @@ class APIClient {
             endpoint += `&type=${encodeURIComponent(type)}`
         }
         const response = await this.request(endpoint)
-        return response.data || response || { data: [] }
+        const newsData = response.data || response || { data: mockData.news }
+        return newsData.data ? newsData : { data: mockData.news }
     }
 
     /**
