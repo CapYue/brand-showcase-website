@@ -14,23 +14,23 @@ function HomePage() {
             <section id="home">
                 <Banner />
             </section>
-            
+
             <section id="about">
                 <About language={language} />
             </section>
-            
+
             <section id="products">
                 <Products language={language} />
             </section>
-            
+
             <section id="tech">
                 <Certifications language={language} />
             </section>
-            
+
             <section id="news">
                 <News language={language} />
             </section>
-            
+
             <section id="contact">
                 <Contact language={language} />
             </section>

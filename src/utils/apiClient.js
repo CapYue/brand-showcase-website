@@ -1,193 +1,108 @@
 /**
- * API 客户端工具类
- * 处理所有前后端通信
- * 支持本地开发和生产环境配置
+ * API 客户端的工具类
+ * 支持惨新的 RESTful API (v1) 和 旧式 API
  */
 
-const API_CONFIG = {
-    development: {
-        baseURL: 'http://localhost:5000/api',
-        timeout: 10000,
-        mock: true // 开发环境支持 Mock 数据
-    },
-    production: {
-        baseURL: 'https://api.yourdomain.com/api',
-        timeout: 10000,
-        mock: false
-    }
-};
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
+const ADMIN_API_URL = import.meta.env.VITE_ADMIN_API_URL || 'http://localhost:3001/api/admin'
 
 class APIClient {
-    constructor(env = 'development') {
-        this.config = API_CONFIG[env];
-        this.baseURL = this.config.baseURL;
-        this.timeout = this.config.timeout;
-        this.mock = this.config.mock;
-    }
-
     /**
-     * 发起 HTTP 请求
-     * @param {string} endpoint - API 端点
-     * @param {string} method - 请求方法 (GET, POST, etc)
-     * @param {object} data - 请求数据
+     * 发送 HTTP 请求
      */
-    async request(endpoint, method = 'GET', data = null) {
-        try {
-            const options = {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-
-            if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
-                options.body = JSON.stringify(data);
+    async request(endpoint, options = {}) {
+        const url = `${API_BASE_URL}${endpoint}`
+        const defaultOptions = {
+            headers: {
+                'Content-Type': 'application/json'
             }
+        }
 
-            const response = await Promise.race([
-                fetch(`${this.baseURL}${endpoint}`, options),
-                new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Request timeout')), this.timeout)
-                )
-            ]);
+        try {
+            const response = await fetch(url, {
+                ...defaultOptions,
+                ...options,
+                headers: {
+                    ...defaultOptions.headers,
+                    ...options.headers
+                }
+            })
 
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                console.error(`API Error: ${response.status}`)
+                // 只有是人为是程序作业，不要抛出错误，䮵免中断渲染
+                return { data: [] }
             }
 
-            return await response.json();
+            const data = await response.json()
+            return data.data || data  // 支持新的 code/message/data 格式
         } catch (error) {
-            console.error('API Error:', error);
-            throw error;
+            console.error('Request error:', error)
+            return { data: [] }  // 一三上晶，错误也返回空数据
         }
     }
 
     /**
-     * 获取首页轮播数据
+     * 获取轮播数据
      */
-    async getBannerData() {
-        return this.request('/website/banner');
+    async getBanners() {
+        const response = await this.request('/banners')
+        return response.data || response || []
     }
 
     /**
-     * 获取企业简介数据
+     * 获取企业信息
      */
-    async getAboutData() {
-        return this.request('/website/about');
+    async getCompanyInfo() {
+        const response = await this.request('/company/info')
+        return response.data || response || {}
     }
 
     /**
-     * 获取产品数据
+     * 获取产品列表
      */
     async getProducts(category = null) {
-        const endpoint = category ? `/website/products?category=${category}` : '/website/products';
-        return this.request(endpoint);
+        let endpoint = '/products'
+        if (category) {
+            endpoint += `?category=${encodeURIComponent(category)}`
+        }
+        const response = await this.request(endpoint)
+        return response.data || response || []
     }
 
     /**
-     * 获取资质荣誉数据
+     * 获取资质荣誉
      */
     async getCertifications() {
-        return this.request('/website/certifications');
+        const response = await this.request('/honors')
+        return response.data || response || []
     }
 
     /**
      * 获取新闻列表
      */
-    async getNews(type = 'all', page = 1, pageSize = 5) {
-        return this.request(`/website/news?type=${type}&page=${page}&pageSize=${pageSize}`);
-    }
-
-    /**
-     * 获取联系信息
-     */
-    async getContactInfo() {
-        return this.request('/website/contact');
-    }
-
-    /**
-     * 获取导航栏数据
-     */
-    async getNavbarData() {
-        return this.request('/website/navbar');
-    }
-
-    /**
-     * 获取页脚数据
-     */
-    async getFooterData() {
-        return this.request('/website/footer');
-    }
-
-    /**
-     * 获取网站配置（颜色、标题等）
-     */
-    async getWebsiteConfig() {
-        return this.request('/website/config');
+    async getNews(type = 'all', page = 1, pageSize = 10) {
+        let endpoint = `/news?page=${page}&pageSize=${pageSize}`
+        if (type && type !== 'all') {
+            endpoint += `&type=${encodeURIComponent(type)}`
+        }
+        const response = await this.request(endpoint)
+        return response.data || response || { data: [] }
     }
 
     /**
      * 提交联系表单
      */
     async submitContactForm(formData) {
-        return this.request('/website/contact/submit', 'POST', formData);
+        const response = await this.request('/contact', {
+            method: 'POST',
+            body: JSON.stringify(formData)
+        })
+        return response
     }
 
-    /**
-     * 上传图片
-     */
-    async uploadImage(file) {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-            const response = await fetch(`${this.baseURL}/upload/image`, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error(`Upload failed: ${response.statusText}`);
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error('Image upload error:', error);
-            throw error;
-        }
-    }
-
-    /**
-     * 批量获取所有网站数据
-     */
-    async getAllWebsiteData() {
-        return Promise.all([
-            this.getNavbarData(),
-            this.getBannerData(),
-            this.getAboutData(),
-            this.getProducts(),
-            this.getCertifications(),
-            this.getNews(),
-            this.getContactInfo(),
-            this.getFooterData(),
-            this.getWebsiteConfig()
-        ]).then(([navbar, banner, about, products, certifications, news, contact, footer, config]) => ({
-            navbar,
-            banner,
-            about,
-            products,
-            certifications,
-            news,
-            contact,
-            footer,
-            config
-        }));
-    }
 }
 
-// 根据环境自动选择配置
-const env = process.env.NODE_ENV || 'development';
-export const apiClient = new APIClient(env);
-
-export default APIClient;
+// 导出单例
+export const apiClient = new APIClient()
+export default apiClient
