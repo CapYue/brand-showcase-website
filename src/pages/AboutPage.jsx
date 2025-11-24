@@ -1,4 +1,5 @@
-import { useOutletContext, useEffect } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
+import { useEffect } from 'react'
 import { updateMetaTags } from '../utils/seo'
 import '../styles/about.css'
 

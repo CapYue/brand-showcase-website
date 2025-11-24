@@ -1,4 +1,4 @@
-import { useOutletContext, useState, useEffect } from 'react-router-dom'
+import { useOutletContext, useState, useEffect } from 'react'
 import { updateMetaTags } from '../utils/seo'
 import { apiClient } from '../utils/apiClient'
 import '../styles/certifications.css'
