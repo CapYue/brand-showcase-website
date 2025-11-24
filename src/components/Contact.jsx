@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { apiClient } from '../utils/apiClient'
 import '../styles/contact.css'
 
 const Contact = ({ language }) => {
@@ -9,6 +10,7 @@ const Contact = ({ language }) => {
         description: '',
         captcha: ''
     })
+    const [loading, setLoading] = useState(false)
     const [captchaCode, setCaptchaCode] = useState(generateCaptcha())
     const [submitMessage, setSubmitMessage] = useState('')
 
@@ -29,7 +31,7 @@ const Contact = ({ language }) => {
         setFormData(prev => ({ ...prev, captcha: '' }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         if (!formData.name || !formData.phone || !formData.description) {
@@ -44,9 +46,24 @@ const Contact = ({ language }) => {
             return
         }
 
-        setSubmitMessage(language === 'zh' ? '提交成功！我们会尽快与您联系。' : 'Submitted successfully! We will contact you soon.')
-        setFormData({ name: '', phone: '', email: '', description: '', captcha: '' })
-        handleRefreshCaptcha()
+        try {
+            setLoading(true)
+            await apiClient.submitContactForm({
+                name: formData.name,
+                phone: formData.phone,
+                email: formData.email,
+                subject: language === 'zh' ? '新的联系表单提交' : 'New Contact Form Submission',
+                message: formData.description
+            })
+            setSubmitMessage(language === 'zh' ? '提交成功！我们会尽快与您联系。' : 'Submitted successfully! We will contact you soon.')
+            setFormData({ name: '', phone: '', email: '', description: '', captcha: '' })
+            handleRefreshCaptcha()
+        } catch (error) {
+            console.error('Failed to submit form:', error)
+            setSubmitMessage(language === 'zh' ? '提交失败，请稍后重试' : 'Submission failed, please try again')
+        } finally {
+            setLoading(false)
+        }
 
         setTimeout(() => setSubmitMessage(''), 3000)
     }

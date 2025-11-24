@@ -42,7 +42,7 @@ console.log(`\n📁 读取文件: ${excelFilePath}\n`);
 try {
     // 导入 xlsx 库
     const XLSX = await import('xlsx');
-    
+
     // 读取 Excel 文件
     const workbook = XLSX.readFile(excelFilePath);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -57,10 +57,10 @@ try {
 
     // 处理数据
     const modifications = processExcelData(data);
-    
+
     // 应用修改
     applyModifications(modifications);
-    
+
     console.log('\n✅ 导入完成！');
     process.exit(0);
 

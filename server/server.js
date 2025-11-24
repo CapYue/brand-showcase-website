@@ -20,7 +20,7 @@ import { fileURLToPath } from 'url';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
 // 获取 __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -256,23 +256,32 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok', message: '服务器运行正常' });
 });
 
-// 获取导航栏数据
-app.get('/api/website/navbar', (req, res) => {
-    res.json(websiteData.navbar);
-});
+// ========== 公共 API v1 ==========
 
 // 获取轮播数据
-app.get('/api/website/banner', (req, res) => {
-    res.json(websiteData.banner);
+app.get('/api/v1/banners', (req, res) => {
+    res.json({
+        code: 200,
+        message: 'success',
+        data: websiteData.banner
+    });
 });
 
-// 获取企业简介
-app.get('/api/website/about', (req, res) => {
-    res.json(websiteData.about);
+// 获取企业信息
+app.get('/api/v1/company/info', (req, res) => {
+    res.json({
+        code: 200,
+        message: 'success',
+        data: {
+            about: websiteData.about,
+            contact: websiteData.contact,
+            config: websiteData.config
+        }
+    });
 });
 
-// 获取产品列表
-app.get('/api/website/products', (req, res) => {
+// 获取产品列表（支持分类筛选）
+app.get('/api/v1/products', (req, res) => {
     const { category } = req.query;
     let products = websiteData.products;
 
@@ -280,27 +289,43 @@ app.get('/api/website/products', (req, res) => {
         products = products.filter(p => p.category === category);
     }
 
-    res.json(products);
+    res.json({
+        code: 200,
+        message: 'success',
+        data: products
+    });
 });
 
 // 获取单个产品
-app.get('/api/website/products/:id', (req, res) => {
+app.get('/api/v1/products/:id', (req, res) => {
     const product = websiteData.products.find(p => p.id === parseInt(req.params.id));
     if (product) {
-        res.json(product);
+        res.json({
+            code: 200,
+            message: 'success',
+            data: product
+        });
     } else {
-        res.status(404).json({ error: '产品不存在' });
+        res.status(404).json({
+            code: 404,
+            message: '产品不存在',
+            data: null
+        });
     }
 });
 
-// 获取资质荣誉
-app.get('/api/website/certifications', (req, res) => {
-    res.json(websiteData.certifications);
+// 获取资质荣誉列表
+app.get('/api/v1/honors', (req, res) => {
+    res.json({
+        code: 200,
+        message: 'success',
+        data: websiteData.certifications
+    });
 });
 
-// 获取新闻列表
-app.get('/api/website/news', (req, res) => {
-    const { type, page = 1, pageSize = 5 } = req.query;
+// 获取新闻列表（支持分类、分页）
+app.get('/api/v1/news', (req, res) => {
+    const { type = 'all', page = 1, pageSize = 10 } = req.query;
     let news = websiteData.news;
 
     if (type && type !== 'all') {
@@ -312,58 +337,90 @@ app.get('/api/website/news', (req, res) => {
     const paginated = news.slice(start, end);
 
     res.json({
-        data: paginated,
-        total: news.length,
-        page: parseInt(page),
-        pageSize: parseInt(pageSize),
-        totalPages: Math.ceil(news.length / pageSize)
+        code: 200,
+        message: 'success',
+        data: {
+            data: paginated,
+            total: news.length,
+            page: parseInt(page),
+            pageSize: parseInt(pageSize),
+            totalPages: Math.ceil(news.length / pageSize)
+        }
     });
 });
 
-// 获取联系信息
-app.get('/api/website/contact', (req, res) => {
-    res.json(websiteData.contact);
-});
-
-// 获取页脚数据
-app.get('/api/website/footer', (req, res) => {
-    res.json(websiteData.footer);
-});
-
-// 获取网站配置
-app.get('/api/website/config', (req, res) => {
-    res.json(websiteData.config);
+// 获取单个新闻详情
+app.get('/api/v1/news/:id', (req, res) => {
+    const article = websiteData.news.find(n => n.id === parseInt(req.params.id));
+    if (article) {
+        res.json({
+            code: 200,
+            message: 'success',
+            data: article
+        });
+    } else {
+        res.status(404).json({
+            code: 404,
+            message: '新闻不存在',
+            data: null
+        });
+    }
 });
 
 // 提交联系表单
-app.post('/api/website/contact/submit', (req, res) => {
+app.post('/api/v1/contact', (req, res) => {
     const { name, email, subject, message, phone } = req.body;
 
     // 验证必填字段
     if (!name || !email || !message) {
-        return res.status(400).json({ error: '缺少必填字段' });
+        return res.status(400).json({
+            code: 400,
+            message: '缺少必填字段',
+            data: null
+        });
+    }
+
+    // 验证邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({
+            code: 400,
+            message: '邮箱格式错误',
+            data: null
+        });
     }
 
     // 这里可以保存到数据库或发送邮件
     console.log('新的联系表单提交:', { name, email, subject, message, phone, timestamp: new Date() });
 
     res.json({
-        success: true,
-        message: '表单提交成功，我们会尽快联系您'
+        code: 200,
+        message: 'success',
+        data: {
+            success: true,
+            message: '表单提交成功，我们会尽快联系您'
+        }
     });
 });
 
-// 上传图片
-app.post('/api/upload/image', upload.single('file'), (req, res) => {
+// 上传文件
+app.post('/api/admin/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
-        return res.status(400).json({ error: '没有上传文件' });
+        return res.status(400).json({
+            code: 400,
+            message: '没有上传文件',
+            data: null
+        });
     }
 
     res.json({
-        success: true,
-        filename: req.file.filename,
-        url: `/uploads/${req.file.filename}`,
-        size: req.file.size
+        code: 200,
+        message: 'success',
+        data: {
+            filename: req.file.filename,
+            url: `/uploads/${req.file.filename}`,
+            size: req.file.size
+        }
     });
 });
 
